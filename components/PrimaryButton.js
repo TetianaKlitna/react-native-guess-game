@@ -1,11 +1,12 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import Colors from '../constants/colors';
 
-function PrimaryButton({ children }) {
+function PrimaryButton({ children, onPress }) {
     function pressHandler() { };
     return (
         <View style={styles.btnContainerOuter}>
             <Pressable
-                onPress={pressHandler}
+                onPress={onPress}
                 style={({ pressed }) => [
                     styles.btnContainerInner,
                     pressed && styles.pressed,
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     btnContainerInner: {
-        backgroundColor: '#72063c',
+        backgroundColor: Colors.primary500,
         paddingVertical: 8,
         paddingHorizontal: 16,
         elevation: 8, // android shadow

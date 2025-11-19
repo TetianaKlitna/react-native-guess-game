@@ -1,12 +1,33 @@
+import { useState } from 'react';
 import {
     TextInput,
     View,
     StyleSheet,
     Platform,
+    Alert
 } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
+import Colors from '../constants/colors';
 
-function StartGameScreen() {
+function StartGameScreen({ onPickNumber  }) {
+    const [enteredNumber, setEnteredNumber] = useState('');
+    function numberInputHandler(text) {
+        setEnteredNumber(text);
+    }
+    function resetInputHandler() {
+        setEnteredNumber('');
+    }
+    function confirmInputHandler() {
+        const chosenNumber = parseInt(enteredNumber);
+        if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+            Alert.alert(
+                'Invalid number!', 
+                'Please enter a number between 1 and 99.',
+                [{text: 'Okey', style: 'destructive', onPress: resetInputHandler}]);
+            return;
+        }
+        onPickNumber(chosenNumber);
+    }
     return (
         <View style={styles.inputContainer}>
             <TextInput
@@ -15,13 +36,15 @@ function StartGameScreen() {
                 keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
                 autoCapitalize="none"
                 autoCorrect={false}
+                value={enteredNumber}
+                onChangeText={numberInputHandler}
             />
             <View style={styles.btnsContainer}>
                 <View style={styles.btnContainer}>
-                    <PrimaryButton>Confirm</PrimaryButton>
+                    <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
                 </View>
                 <View style={styles.btnContainer}>
-                    <PrimaryButton>Reset</PrimaryButton>
+                    <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
                 </View>
             </View>
         </View>
@@ -35,7 +58,7 @@ const styles = StyleSheet.create({
         padding: 16,
         marginTop: 100,
         marginHorizontal: 24,
-        backgroundColor: '#b44c80ff',
+        backgroundColor: Colors.primary400,
         borderRadius: 8,
         //android shadow
         elevation: 4,
@@ -49,9 +72,9 @@ const styles = StyleSheet.create({
         height: 60,
         width: 50,
         fontSize: 32,
-        borderBottomColor: '#ddb52f',
+        borderBottomColor: Colors.accent500,
         borderBottomWidth: 2,
-        color: '#ddb52f',
+        color: Colors.accent500,
         margin: 8,
         fontWeight: 'bold',
         textAlign: 'center',
@@ -60,7 +83,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    btnContainer:{
+    btnContainer: {
         flex: 1,
     }
 });
