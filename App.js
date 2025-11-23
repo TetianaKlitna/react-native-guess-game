@@ -13,6 +13,7 @@ import * as SplashScreen from 'expo-splash-screen';
 export default function App() {
   const [userNumber, setUserNumber] = useState(null);
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [roundsNumber, setRoundsNumber] = useState(0);
   const [ fontsLoaded ]  = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
@@ -32,12 +33,16 @@ export default function App() {
   function gameOverHandler() {
     setGameIsOver(true);
   }
+  function startNewGameHandler() {
+    setUserNumber(null);
+    setRoundsNumber(0);
+  }
   let screen = <StartGameScreen onPickNumber={pickNumberHandler} />
   if (userNumber) {
-    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />
+    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler}  calculateRounds={setRoundsNumber} />
   }
   if(gameIsOver && userNumber){
-    screen = <GameOverScreen />;
+    screen = <GameOverScreen roundsNumber={roundsNumber} userNumber={userNumber} onStartNewGame={startNewGameHandler} />;
   }
   return (
     <LinearGradient colors={[Colors.accent500, Colors.primary500]} style={styles.rootScreen}>

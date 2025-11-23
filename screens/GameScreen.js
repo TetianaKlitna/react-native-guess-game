@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, Text, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Title from '../components/ui/Title';
 import NumberContainer from '../components/game/NumberContainer';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
+import GuessLogItem from '../components/game/GuessLogItem';
 
 function generateRandomBetween(min, max, exclude) {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -20,9 +21,15 @@ function generateRandomBetween(min, max, exclude) {
 let minBoundary = 1;
 let maxBoundary = 100;
 
-function GameScreen({ userNumber, onGameOver }) {
+function GameScreen({ userNumber, onGameOver, calculateRounds }) {
     const initialGuess = generateRandomBetween(1, 100, userNumber);
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
+    const [guessRounds, setGuessRounds] = useState([initialGuess]);
+
+    useEffect(() => {
+        minBoundary = 1;
+        maxBoundary = 100;
+    }, []);
 
     useEffect(() => {
         if (currentGuess === userNumber) {
@@ -39,13 +46,18 @@ function GameScreen({ userNumber, onGameOver }) {
             Alert.alert("Don't lie!", "You know that this is wrong...", [{ text: 'Sorry!', style: 'cancel' }]);
             return;
         }
+
         if (direction === 'lower') {
             maxBoundary = currentGuess;
         } else if (direction === 'greater') {
             minBoundary = currentGuess + 1;
         }
+
         const newRandomNumber = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
         setCurrentGuess(newRandomNumber);
+
+        calculateRounds((prevRounds) => prevRounds + 1);
+        setGuessRounds((prevGuessRounds) => [...prevGuessRounds, newRandomNumber]);
     }
     return (
         <View style={styles.screen}>
@@ -57,8 +69,16 @@ function GameScreen({ userNumber, onGameOver }) {
                     <PrimaryButton onPress={() => nextGuessHandler('greater')}><Ionicons name="add" size={24} color="white" /></PrimaryButton>
                     <PrimaryButton onPress={() => nextGuessHandler('lower')}><Ionicons name="remove" size={24} color="white" /></PrimaryButton>
                 </View>
-                {/* LOG ROUNDS */}
+
+
             </Card>
+            <View>
+                <FlatList
+                    data={guessRounds}
+                    renderItem={({ item }) => <GuessLogItem guess={item} roundNumber={guessRounds.indexOf(item) + 1} />}
+                    keyExtractor={(item) => item.toString()}
+                />
+            </View>
         </View>
     );
 }
