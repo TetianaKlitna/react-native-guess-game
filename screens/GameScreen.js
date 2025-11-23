@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import Title from '../components/ui/Title';
 import NumberContainer from '../components/game/NumberContainer';
 import PrimaryButton from '../components/ui/PrimaryButton';
@@ -48,13 +49,13 @@ function GameScreen({ userNumber, onGameOver }) {
     }
     return (
         <View style={styles.screen}>
+            <Title>Opponent's Guess</Title>
+            <NumberContainer>{currentGuess}</NumberContainer>
             <Card>
-                <Title>Opponent's Guess</Title>
-                <NumberContainer>{currentGuess}</NumberContainer>
-                <InstructionText>Higher or lower?</InstructionText>
-                <View style={styles.btns}>
-                    <PrimaryButton onPress={() => nextGuessHandler('greater')}>+</PrimaryButton>
-                    <PrimaryButton onPress={() => nextGuessHandler('lower')}>-</PrimaryButton>
+                <InstructionText style={{ fontSize: 20 }}>Higher or lower?</InstructionText>
+                <View style={styles.btnsContainer}>
+                    <PrimaryButton onPress={() => nextGuessHandler('greater')}><Ionicons name="add" size={24} color="white" /></PrimaryButton>
+                    <PrimaryButton onPress={() => nextGuessHandler('lower')}><Ionicons name="remove" size={24} color="white" /></PrimaryButton>
                 </View>
                 {/* LOG ROUNDS */}
             </Card>
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
         padding: 24,
         alignItems: 'center',
     },
-    btns: {
+    btnsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
