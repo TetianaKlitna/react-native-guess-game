@@ -1,16 +1,25 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, ImageBackground  } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import {  useFonts } from 'expo-font';
 import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
 import GameOverScreen from './screens/GameOverScreen';
 import Colors from './constants/colors';
+import AppLoading from 'expo-app-loading';
 
 export default function App() {
   const [userNumber, setUserNumber] = useState(null);
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [ fontsLoaded ]  = useFonts({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
+  if(!fontsLoaded){
+    return <AppLoading />;
+  }
   function pickNumberHandler(pickedNumber) {
     setUserNumber(pickedNumber);
     setGameIsOver(false);
