@@ -30,8 +30,9 @@ export default function App() {
     setUserNumber(pickedNumber);
     setGameIsOver(false);
   }
-  function gameOverHandler() {
+  function gameOverHandler(numberOfRounds) {
     setGameIsOver(true);
+    setRoundsNumber(numberOfRounds);
   }
   function startNewGameHandler() {
     setUserNumber(null);
@@ -39,7 +40,7 @@ export default function App() {
   }
   let screen = <StartGameScreen onPickNumber={pickNumberHandler} />
   if (userNumber) {
-    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler}  calculateRounds={setRoundsNumber} />
+    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />
   }
   if(gameIsOver && userNumber){
     screen = <GameOverScreen roundsNumber={roundsNumber} userNumber={userNumber} onStartNewGame={startNewGameHandler} />;

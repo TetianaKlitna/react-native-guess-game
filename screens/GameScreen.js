@@ -21,7 +21,7 @@ function generateRandomBetween(min, max, exclude) {
 let minBoundary = 1;
 let maxBoundary = 100;
 
-function GameScreen({ userNumber, onGameOver, calculateRounds }) {
+function GameScreen({ userNumber, onGameOver }) {
     const initialGuess = generateRandomBetween(1, 100, userNumber);
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
     const [guessRounds, setGuessRounds] = useState([initialGuess]);
@@ -33,7 +33,7 @@ function GameScreen({ userNumber, onGameOver, calculateRounds }) {
 
     useEffect(() => {
         if (currentGuess === userNumber) {
-            onGameOver();
+            onGameOver(guessRounds.length);
         }
     }, [currentGuess, userNumber, onGameOver]);
 
@@ -55,8 +55,6 @@ function GameScreen({ userNumber, onGameOver, calculateRounds }) {
 
         const newRandomNumber = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
         setCurrentGuess(newRandomNumber);
-
-        calculateRounds((prevRounds) => prevRounds + 1);
         setGuessRounds((prevGuessRounds) => [...prevGuessRounds, newRandomNumber]);
     }
     return (
@@ -69,10 +67,8 @@ function GameScreen({ userNumber, onGameOver, calculateRounds }) {
                     <PrimaryButton onPress={() => nextGuessHandler('greater')}><Ionicons name="add" size={24} color="white" /></PrimaryButton>
                     <PrimaryButton onPress={() => nextGuessHandler('lower')}><Ionicons name="remove" size={24} color="white" /></PrimaryButton>
                 </View>
-
-
             </Card>
-            <View>
+            <View style={styles.listContainer}>
                 <FlatList
                     data={guessRounds}
                     renderItem={({ item }) => <GuessLogItem guess={item} roundNumber={guessRounds.indexOf(item) + 1} />}
@@ -94,6 +90,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         paddingHorizontal: 20,
+    },
+    listContainer:{
+        flex: 1,
+        padding: 16,
     }
 });
 
