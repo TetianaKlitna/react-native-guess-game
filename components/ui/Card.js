@@ -9,6 +9,7 @@ function Card({ children }) {
 
 const styles = StyleSheet.create({
     card: {
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 16,

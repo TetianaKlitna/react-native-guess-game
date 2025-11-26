@@ -19,7 +19,7 @@ function PrimaryButton({ children, onPress }) {
 
 const styles = StyleSheet.create({
     btnContainerOuter: {
-        width: '50%',
+        width: 'auto',
         borderRadius: 28,
         margin: 4,
         overflow: 'hidden',
