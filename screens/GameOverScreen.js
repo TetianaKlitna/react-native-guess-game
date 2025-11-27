@@ -7,8 +7,9 @@ import PrimaryButton from '../components/ui/PrimaryButton';
 
 function GameOverScreen({ roundsNumber, userNumber, onStartNewGame }) {
     const { width: deviceWidth } = useWindowDimensions();
-    let imageSize = 300;
-    if (deviceWidth < 380) {
+    let imageSize = 200;
+    console.log(deviceWidth);
+    if (deviceWidth < 450) {
         imageSize = 150;
     }
     const imageStyle = {
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     screen: { flex: 1 },
     container: {
         flex: 1,
-        padding: 24,
+        padding: 12,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
         // borderRadius: deviceWidth < 450 ? 75 : 150,
         borderWidth: 3,
         borderColor: Colors.primary600,
-        margin: 36,
+        margin: 12,
         overflow: 'hidden',
     },
     image: {
